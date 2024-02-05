@@ -1,5 +1,7 @@
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>연장 근로 계산기</title>
     <style>
@@ -25,7 +27,7 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        input[type="number"], input[type="text"], button, .quick-set button {
+        select, input[type="text"], button, .quick-set button {
             width: 100%;
             padding: 10px;
             margin: 10px 0 20px 0;
@@ -58,7 +60,15 @@
         <button onclick="toggleMask()">보기/숨기기</button>
         <br><br>
         <label for="overtimeHours">연장 근로 시간:</label>
-        <input type="number" id="overtimeHours" placeholder="시간">
+        <select id="overtimeHours">
+            <option value="">시간 선택</option>
+            <!-- 1시간부터 15시간까지 옵션 추가 -->
+            <script>
+                for(let i = 1; i <= 15; i++) {
+                    document.write('<option value="' + i + '">' + i + '시간</option>');
+                }
+            </script>
+        </select>
         <br><br>
         <div class="quick-set">
             <button onclick="addBaseSalary(1000000)">+100만원</button>
@@ -71,15 +81,15 @@
     <script>
         let isMasked = true;
         function addBaseSalary(amount) {
-            const currentSalary = parseInt(document.getElementById("baseSalary").dataset.realValue) || 0;
+            const currentSalary = parseInt(document.getElementById("baseSalary").dataset.realValue || "0", 10);
             const newSalary = currentSalary + amount;
             document.getElementById("baseSalary").dataset.realValue = newSalary;
             updateSalaryDisplay();
         }
 
         function calculateOvertimePay() {
-            const baseSalary = parseInt(document.getElementById("baseSalary").dataset.realValue) || 0;
-            const overtimeHours = document.getElementById("overtimeHours").value;
+            const baseSalary = parseInt(document.getElementById("baseSalary").dataset.realValue || "0", 10);
+            const overtimeHours = parseInt(document.getElementById("overtimeHours").value, 10);
             const overtimeRate = 1.5;
             const hourlyRate = baseSalary / 209;
             const overtimePay = hourlyRate * overtimeHours * overtimeRate;
