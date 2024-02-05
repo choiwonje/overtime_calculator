@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>연장 근로 계산기</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+        h2 {
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        label {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        input[type="number"] {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0 20px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box; /* Makes sure padding doesn't affect total width */
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #dbf3d8;
+            border-radius: 5px;
+            color: #3c763d;
+        }
+    </style>
+    <script>
+        function calculateOvertimePay() {
+    // 입력된 값들을 가져옵니다.
+    const baseSalary = document.getElementById("baseSalary").value;
+    const overtimeHours = document.getElementById("overtimeHours").value;
+    const overtimeRate = 1.5; // 연장 근로 배율은 고정된 값으로 설정합니다.
+
+    // 시간당 기본 급여를 계산합니다.
+    const hourlyRate = baseSalary / 209;
+    // 연장 근로에 대한 추가 급여를 계산합니다.
+    const overtimePay = hourlyRate * overtimeHours * overtimeRate;
+
+    // 결과를 반올림합니다.
+    const roundedOvertimePay = Math.round(overtimePay);
+
+    // 결과값에 천 단위마다 쉼표를 삽입합니다.
+    const formattedOvertimePay = new Intl.NumberFormat().format(roundedOvertimePay);
+
+    // 결과를 화면에 표시합니다.
+    document.getElementById("result").innerHTML = "연장 근로에 대한 추가 급여: " + formattedOvertimePay + "원";
+}
+    </script>
+</head>
+<body>
+    <h2>연장 근로 계산기</h2>
+    <label for="baseSalary">기본 월급:</label>
+    <input type="number" id="baseSalary" placeholder="원">
+    <br><br>
+    <label for="overtimeHours">연장 근로 시간:</label>
+    <input type="number" id="overtimeHours" placeholder="시간">
+    <br><br>
+    <button onclick="calculateOvertimePay()">계산하기</button>
+    <p id="result"></p>
+</body>
+</html>
