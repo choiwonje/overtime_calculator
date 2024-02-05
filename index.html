@@ -84,3 +84,34 @@
             const currentSalary = parseInt(document.getElementById("baseSalary").dataset.realValue || "0", 10);
             const newSalary = currentSalary + amount;
             document.getElementById("baseSalary").
+            dataset.realValue = newSalary;
+            updateSalaryDisplay();
+        }
+
+        function calculateOvertimePay() {
+            const baseSalary = parseInt(document.getElementById("baseSalary").dataset.realValue || "0", 10);
+            const overtimeHours = parseInt(document.getElementById("overtimeHours").value, 10);
+            const overtimeRate = 1.5;
+            const hourlyRate = baseSalary / 209;
+            const overtimePay = hourlyRate * overtimeHours * overtimeRate;
+            const roundedOvertimePay = Math.round(overtimePay);
+            const formattedOvertimePay = new Intl.NumberFormat().format(roundedOvertimePay);
+            document.getElementById("result").innerHTML = "연장 근로에 대한 추가 급여: " + formattedOvertimePay + "원";
+        }
+
+        function toggleMask(force) {
+            isMasked = force !== undefined ? force : !isMasked;
+            updateSalaryDisplay();
+        }
+
+        function updateSalaryDisplay() {
+            const salaryInput = document.getElementById("baseSalary");
+            if (isMasked) {
+                salaryInput.value = salaryInput.dataset.realValue ? '*****' : '';
+            } else {
+                salaryInput.value = salaryInput.dataset.realValue;
+            }
+        }
+    </script>
+</body>
+</html>
