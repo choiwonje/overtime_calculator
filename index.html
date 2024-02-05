@@ -22,34 +22,34 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        label, .quick-set, .control-group {
-            font-weight: bold;
-            margin-top: 10px;
-            display: block;
+        .salary-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
         }
-        select, input[type="text"], .quick-set button, .control-group button {
+        .toggle-button {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #4CAF50;
+            cursor: pointer;
+        }
+        input[type="text"], input[type="password"] {
             width: 100%;
             padding: 10px;
-            margin: 5px 0;
+            margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
             box-sizing: border-box;
         }
-        .quick-set {
-            display: flex;
-            justify-content: space-between;
-        }
-        .quick-set button {
-            width: 32%; /* Adjusted width for 3 buttons to fit in one row */
-            background-color: #808080; /* Gray color */
-            color: white;
-        }
-        .control-group {
-            display: flex;
-            justify-content: space-between;
-        }
-        .control-group button {
-            width: 48%; /* Adjusted width for 2 buttons to fit side by side */
+        select, button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
         }
         button:hover {
             opacity: 0.8;
@@ -67,67 +67,23 @@
     <h2>연장 근로 계산기</h2>
     <div class="container">
         <label for="baseSalary">기본 월급:</label>
-        <input type="text" id="baseSalary" placeholder="원" onfocus="toggleMask(true)" onblur="toggleMask(false)">
-        <label for="overtimeHours">연장 근로 시간:</label>
-        <select id="overtimeHours">
-            <option value="">시간 선택</option>
-            <!-- 1시간부터 15시간까지 옵션 추가 -->
-            <script>
-                for(let i = 1; i <= 15; i++) {
-                    document.write('<option value="' + i + '">' + i + '시간</option>');
-                }
-            </script>
-        </select>
-        <div class="quick-set">
-            <button onclick="addBaseSalary(1000000)">+100만원</button>
-            <button onclick="addBaseSalary(100000)">+10만원</button>
-            <button onclick="addBaseSalary(10000)">+만원</button>
+        <div class="salary-input-container">
+            <input type="password" id="baseSalary" placeholder="원">
+            <button class="toggle-button" onclick="toggleVisibility()">보기</button>
         </div>
-        <div class="control-group">
-            <button onclick="calculateOvertimePay()">계산하기</button>
-            <button class="reset-button" onclick="resetForm()">초기화</button>
-        </div>
-        <p id="result"></p>
+        <!-- 나머지 코드는 이전 예시와 동일하며, 여기에는 포함하지 않음 -->
     </div>
     <script>
-        let isMasked = true;
-        function addBaseSalary(amount) {
-            const currentSalary = parseInt(document.getElementById("baseSalary").dataset.realValue || "0", 10);
-            const newSalary = currentSalary + amount;
-            document.getElementById("baseSalary").dataset.realValue = newSalary;
-            updateSalaryDisplay();
-        }
-
-        function calculateOvertimePay() {
-            const baseSalary = parseInt(document.getElementById("baseSalary").dataset.realValue || "0", 10);
-            const overtimeHours = parseInt(document.getElementById("overtimeHours").value, 10);
-            const overtimeRate = 1.5;
-            const hourlyRate = baseSalary / 209;
-            const overtimePay = hourlyRate * overtimeHours * overtimeRate;
-            const roundedOvertimePay = Math.round(overtimePay);
-            const formattedOvertimePay = new Intl.NumberFormat().format(roundedOvertimePay);
-            document.getElementById("result").innerHTML = "연장 근로에 대한 추가 급여: " + formattedOvertimePay + "원";
-        }
-
-        function toggleMask(force) {
-            isMasked = force !== undefined ? force : !isMasked;
-            updateSalaryDisplay();
-        }
-
-        function updateSalaryDisplay() {
-            const salaryInput = document.getElementById("baseSalary");
-            if (isMasked) {
-                salaryInput.value = salaryInput.dataset.realValue ? '*****' : '';
+        function toggleVisibility() {
+            let salaryInput = document.getElementById("baseSalary");
+            let toggleButton = document.querySelector(".toggle-button");
+            if (salaryInput.type === "password") {
+                salaryInput.type = "text";
+                toggleButton.textContent = "가리기";
             } else {
-                salaryInput.value = salaryInput.dataset.realValue;
+                salaryInput.type = "password";
+                toggleButton.textContent = "보기";
             }
-        }
-
-        function resetForm() {
-            document.getElementById("baseSalary").dataset.realValue = '';
-            document.getElementById("overtimeHours").selectedIndex = 0;
-            document.getElementById("result").innerHTML = '';
-            updateSalaryDisplay();
         }
     </script>
 </body>
