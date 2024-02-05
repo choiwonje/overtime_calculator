@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>연장 근로 계산기</title>
     <style>
-        /* 기존 스타일 유지 */
+        /* 스타일은 기존과 동일하게 유지합니다 */
         body {
             font-family: 'Arial', sans-serif;
             margin: 20px;
@@ -26,7 +26,7 @@
             font-weight: bold;
             margin-top: 10px;
         }
-        input[type="number"], button, .quick-set button {
+        input[type="number"], input[type="text"], button, .quick-set button {
             width: 100%;
             padding: 10px;
             margin: 10px 0 20px 0;
@@ -50,47 +50,58 @@
             color: #3c763d;
         }
     </style>
-    <script>
-        function setBaseSalary(amount) {
-    document.getElementById("baseSalary").value = amount;
-}
-        function calculateOvertimePay() {
-    // 입력된 값들을 가져옵니다.
-    const baseSalary = document.getElementById("baseSalary").value;
-    const overtimeHours = document.getElementById("overtimeHours").value;
-    const overtimeRate = 1.5; // 연장 근로 배율은 고정된 값으로 설정합니다.
-
-    // 시간당 기본 급여를 계산합니다.
-    const hourlyRate = baseSalary / 209;
-    // 연장 근로에 대한 추가 급여를 계산합니다.
-    const overtimePay = hourlyRate * overtimeHours * overtimeRate;
-
-    // 결과를 반올림합니다.
-    const roundedOvertimePay = Math.round(overtimePay);
-
-    // 결과값에 천 단위마다 쉼표를 삽입합니다.
-    const formattedOvertimePay = new Intl.NumberFormat().format(roundedOvertimePay);
-
-    // 결과를 화면에 표시합니다.
-    document.getElementById("result").innerHTML = "연장 근로에 대한 추가 급여: " + formattedOvertimePay + "원";
-}
-    </script>
-        <!-- 월급 빠른 설정 버튼 추가 -->
-<div>
-    <button onclick="setBaseSalary(1000000)">100만원</button>
-    <button onclick="setBaseSalary(100000)">10만원</button>
-    <button onclick="setBaseSalary(10000)">만원</button>
-</div>
 </head>
 <body>
     <h2>연장 근로 계산기</h2>
-    <label for="baseSalary">기본 월급:</label>
-    <input type="number" id="baseSalary" placeholder="원">
-    <br><br>
-    <label for="overtimeHours">연장 근로 시간:</label>
-    <input type="number" id="overtimeHours" placeholder="시간">
-    <br><br>
-    <button onclick="calculateOvertimePay()">계산하기</button>
-    <p id="result"></p>
+    <div class="container">
+        <label for="baseSalary">기본 월급:</label>
+        <input type="text" id="baseSalary" placeholder="원" onfocus="toggleMask(true)" onblur="toggleMask(false)">
+        <button onclick="toggleMask()">보기/숨기기</button>
+        <br><br>
+        <label for="overtimeHours">연장 근로 시간:</label>
+        <input type="number" id="overtimeHours" placeholder="시간">
+        <br><br>
+        <div class="quick-set">
+            <button onclick="addBaseSalary(1000000)">+100만원</button>
+            <button onclick="addBaseSalary(100000)">+10만원</button>
+            <button onclick="addBaseSalary(10000)">+만원</button>
+        </div>
+        <button onclick="calculateOvertimePay()">계산하기</button>
+        <p id="result"></p>
+    </div>
+    <script>
+        let isMasked = true;
+        function addBaseSalary(amount) {
+            const currentSalary = parseInt(document.getElementById("baseSalary").dataset.realValue) || 0;
+            const newSalary = currentSalary + amount;
+            document.getElementById("baseSalary").dataset.realValue = newSalary;
+            updateSalaryDisplay();
+        }
+
+        function calculateOvertimePay() {
+            const baseSalary = parseInt(document.getElementById("baseSalary").dataset.realValue) || 0;
+            const overtimeHours = document.getElementById("overtimeHours").value;
+            const overtimeRate = 1.5;
+            const hourlyRate = baseSalary / 209;
+            const overtimePay = hourlyRate * overtimeHours * overtimeRate;
+            const roundedOvertimePay = Math.round(overtimePay);
+            const formattedOvertimePay = new Intl.NumberFormat().format(roundedOvertimePay);
+            document.getElementById("result").innerHTML = "연장 근로에 대한 추가 급여: " + formattedOvertimePay + "원";
+        }
+
+        function toggleMask(force) {
+            isMasked = force !== undefined ? force : !isMasked;
+            updateSalaryDisplay();
+        }
+
+        function updateSalaryDisplay() {
+            const salaryInput = document.getElementById("baseSalary");
+            if (isMasked) {
+                salaryInput.value = salaryInput.dataset.realValue ? '*****' : '';
+            } else {
+                salaryInput.value = salaryInput.dataset.realValue;
+            }
+        }
+    </script>
 </body>
 </html>
