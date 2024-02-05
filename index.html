@@ -2,13 +2,8 @@
 <html>
 <head>
     <title>연장 근로 계산기</title>
-    <!-- 월급 빠른 설정 버튼 추가 -->
-<div>
-    <button onclick="setBaseSalary(1000000)">100만원</button>
-    <button onclick="setBaseSalary(100000)">10만원</button>
-    <button onclick="setBaseSalary(10000)">만원</button>
-</div>
     <style>
+        /* 기존 스타일 유지 */
         body {
             font-family: 'Arial', sans-serif;
             margin: 20px;
@@ -26,26 +21,22 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        label {
+        label, .quick-set {
             font-weight: bold;
             margin-top: 10px;
         }
-        input[type="number"] {
+        input[type="number"], button, .quick-set button {
             width: 100%;
             padding: 10px;
             margin: 10px 0 20px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
-            box-sizing: border-box; /* Makes sure padding doesn't affect total width */
+            box-sizing: border-box;
         }
         button {
             background-color: #4CAF50;
             color: white;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
-            width: 100%;
         }
         button:hover {
             background-color: #45a049;
@@ -59,6 +50,9 @@
         }
     </style>
     <script>
+        function setBaseSalary(amount) {
+    document.getElementById("baseSalary").value = amount;
+}
         function calculateOvertimePay() {
     // 입력된 값들을 가져옵니다.
     const baseSalary = document.getElementById("baseSalary").value;
@@ -80,6 +74,12 @@
     document.getElementById("result").innerHTML = "연장 근로에 대한 추가 급여: " + formattedOvertimePay + "원";
 }
     </script>
+        <!-- 월급 빠른 설정 버튼 추가 -->
+<div>
+    <button onclick="setBaseSalary(1000000)">100만원</button>
+    <button onclick="setBaseSalary(100000)">10만원</button>
+    <button onclick="setBaseSalary(10000)">만원</button>
+</div>
 </head>
 <body>
     <h2>연장 근로 계산기</h2>
