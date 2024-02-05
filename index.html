@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>연장 근로 계산기</title>
     <style>
-        /* 스타일은 기존과 동일하게 유지합니다 */
+        /* 스타일은 기존과 동일하게 유지하면서 약간의 개선을 추가 */
         body {
             font-family: 'Arial', sans-serif;
             margin: 20px;
@@ -23,17 +23,21 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        label, .quick-set {
+        label, .quick-set, .control-group {
             font-weight: bold;
             margin-top: 10px;
+            display: block;
         }
         select, input[type="text"], button, .quick-set button {
-            width: 100%;
+            width: calc(100% - 20px);
             padding: 10px;
-            margin: 10px 0 20px 0;
+            margin: 10px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
             box-sizing: border-box;
+        }
+        .control-group button {
+            margin-right: 10px;
         }
         button {
             background-color: #4CAF50;
@@ -42,6 +46,13 @@
         }
         button:hover {
             background-color: #45a049;
+        }
+        .reset-button {
+            background-color: #f44336;
+            color: white;
+        }
+        .reset-button:hover {
+            background-color: #d32f2f;
         }
         #result {
             margin-top: 20px;
@@ -57,8 +68,6 @@
     <div class="container">
         <label for="baseSalary">기본 월급:</label>
         <input type="text" id="baseSalary" placeholder="원" onfocus="toggleMask(true)" onblur="toggleMask(false)">
-        <button onclick="toggleMask()">보기/숨기기</button>
-        <br><br>
         <label for="overtimeHours">연장 근로 시간:</label>
         <select id="overtimeHours">
             <option value="">시간 선택</option>
@@ -69,13 +78,15 @@
                 }
             </script>
         </select>
-        <br><br>
         <div class="quick-set">
             <button onclick="addBaseSalary(1000000)">+100만원</button>
             <button onclick="addBaseSalary(100000)">+10만원</button>
             <button onclick="addBaseSalary(10000)">+만원</button>
         </div>
-        <button onclick="calculateOvertimePay()">계산하기</button>
+        <div class="control-group">
+            <button onclick="calculateOvertimePay()">계산하기</button>
+            <button class="reset-button" onclick="resetForm()">초기화</button>
+        </div>
         <p id="result"></p>
     </div>
     <script>
@@ -110,6 +121,13 @@
             } else {
                 salaryInput.value = salaryInput.dataset.realValue;
             }
+        }
+
+        function resetForm() {
+            document.getElementById("baseSalary").dataset.realValue = '';
+            document.getElementById("overtimeHours").selectedIndex = 0;
+            document.getElementById("result").innerHTML = '';
+            updateSalaryDisplay();
         }
     </script>
 </body>
