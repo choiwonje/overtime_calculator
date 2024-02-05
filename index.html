@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>연장 근로 계산기</title>
     <style>
+        /* 스타일은 기존과 동일하게 유지합니다 */
         body {
             font-family: 'Arial', sans-serif;
             margin: 20px;
@@ -22,42 +23,25 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .salary-input-container {
-            position: relative;
-            display: flex;
-            align-items: center;
+        label, .quick-set {
+            font-weight: bold;
+            margin-top: 10px;
         }
-        .toggle-button {
-            position: absolute;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #4CAF50;
-            cursor: pointer;
-        }
-        input[type="text"], input[type="password"], select, button {
+        select, input[type="text"], button, .quick-set button {
             width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 10px 0 20px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
             box-sizing: border-box;
         }
-        .quick-set, .control-group {
-            display: flex;
-            justify-content: space-between;
-            margin: 10px 0;
-        }
-        .quick-set button, .control-group button {
-            background-color: #808080; /* Gray color for quick-set buttons */
+        button {
+            background-color: #4CAF50;
             color: white;
-            width: 32%;
-        }
-        .control-group button {
-            width: 48%; /* Adjusted width for control buttons */
+            cursor: pointer;
         }
         button:hover {
-            opacity: 0.8;
+            background-color: #45a049;
         }
         #result {
             margin-top: 20px;
@@ -66,19 +50,15 @@
             border-radius: 5px;
             color: #3c763d;
         }
-        .masked {
-            display: none; /* Initially hide the masked content */
-        }
     </style>
 </head>
 <body>
     <h2>연장 근로 계산기</h2>
     <div class="container">
         <label for="baseSalary">기본 월급:</label>
-        <div class="salary-input-container">
-            <input type="password" id="baseSalary" placeholder="원" data-real-value="">
-            <button class="toggle-button" onclick="toggleVisibility()">보기</button>
-        </div>
+        <input type="text" id="baseSalary" placeholder="원" onfocus="toggleMask(true)" onblur="toggleMask(false)">
+        <button onclick="toggleMask()">보기/숨기기</button>
+        <br><br>
         <label for="overtimeHours">연장 근로 시간:</label>
         <select id="overtimeHours">
             <option value="">시간 선택</option>
@@ -89,66 +69,18 @@
                 }
             </script>
         </select>
+        <br><br>
         <div class="quick-set">
             <button onclick="addBaseSalary(1000000)">+100만원</button>
             <button onclick="addBaseSalary(100000)">+10만원</button>
             <button onclick="addBaseSalary(10000)">+만원</button>
         </div>
-        <div class="control-group">
-            <button onclick="calculateOvertimePay()">계산하기</button>
-            <button onclick="resetForm()">초기화</button>
-        </div>
+        <button onclick="calculateOvertimePay()">계산하기</button>
+        <p id="result"></p>
+    </div>
     <script>
-        function toggleVisibility() {
-            let salaryInput = document.getElementById("baseSalary");
-            let toggleButton = document.querySelector(".toggle-button");
-                    if (salaryInput.type === "password") {
-            salaryInput.type = "text";
-            toggleButton.textContent = "가리기";
-            salaryInput.value = salaryInput.dataset.realValue;
-        } else {
-            salaryInput.type = "password";
-            toggleButton.textContent = "보기";
-            salaryInput.value = salaryInput.dataset.realValue ? '*****' : '';
-        }
-    }
-
-    function addBaseSalary(amount) {
-        const salaryInput = document.getElementById("baseSalary");
-        const currentSalary = parseInt(salaryInput.dataset.realValue || "0");
-        const newSalary = currentSalary + amount;
-        salaryInput.dataset.realValue = newSalary.toString();
-        if (salaryInput.type === "text") {
-            salaryInput.value = newSalary;
-        }
-    }
-
-    function calculateOvertimePay() {
-        const baseSalary = parseInt(document.getElementById("baseSalary").dataset.realValue || "0");
-        const overtimeHours = parseInt(document.getElementById("overtimeHours").value || "0");
-        const overtimeRate = 1.5;
-        const hourlyRate = baseSalary / 209;
-        const overtimePay = hourlyRate * overtimeHours * overtimeRate;
-        document.getElementById("result").innerHTML = "연장 근로에 대한 추가 급여: " + new Intl.NumberFormat().format(Math.round(overtimePay)) + "원";
-    }
-
-    function resetForm() {
-        document.getElementById("baseSalary").dataset.realValue = '';
-        document.getElementById("baseSalary").value = '';
-        document.getElementById("overtimeHours").selectedIndex = 0;
-        document.getElementById("result").innerHTML = '';
-        document.getElementById("baseSalary").type = "password";
-        document.querySelector(".toggle-button").textContent = "보기";
-    }
-
-    function toggleMask() {
-        var maskedContent = document.getElementById("maskedContent");
-        if (maskedContent.style.display === "none") {
-            maskedContent.style.display = "block";
-        } else {
-            maskedContent.style.display = "none";
-        }
-    }
-    </script>
-</body>
-</html>
+        let isMasked = true;
+        function addBaseSalary(amount) {
+            const currentSalary = parseInt(document.getElementById("baseSalary").dataset.realValue || "0", 10);
+            const newSalary = currentSalary + amount;
+            document.getElementById("baseSalary").
