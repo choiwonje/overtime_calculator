@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>연장 근로 계산기</title>
     <style>
-        /* 스타일은 기존과 동일하게 유지하면서 약간의 개선을 추가 */
         body {
             font-family: 'Arial', sans-serif;
             margin: 20px;
@@ -28,31 +27,32 @@
             margin-top: 10px;
             display: block;
         }
-        select, input[type="text"], button, .quick-set button {
-            width: calc(100% - 20px);
+        select, input[type="text"], .quick-set button, .control-group button {
+            width: 100%;
             padding: 10px;
-            margin: 10px 0;
+            margin: 5px 0;
             border-radius: 5px;
             border: 1px solid #ccc;
             box-sizing: border-box;
         }
-        .control-group button {
-            margin-right: 10px;
+        .quick-set {
+            display: flex;
+            justify-content: space-between;
         }
-        button {
-            background-color: #4CAF50;
+        .quick-set button {
+            width: 32%; /* Adjusted width for 3 buttons to fit in one row */
+            background-color: #808080; /* Gray color */
             color: white;
-            cursor: pointer;
+        }
+        .control-group {
+            display: flex;
+            justify-content: space-between;
+        }
+        .control-group button {
+            width: 48%; /* Adjusted width for 2 buttons to fit side by side */
         }
         button:hover {
-            background-color: #45a049;
-        }
-        .reset-button {
-            background-color: #f44336;
-            color: white;
-        }
-        .reset-button:hover {
-            background-color: #d32f2f;
+            opacity: 0.8;
         }
         #result {
             margin-top: 20px;
