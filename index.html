@@ -22,34 +22,34 @@
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
-        .salary-input-container {
-            position: relative;
+        label, .quick-set, .control-group {
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        select, input[type="text"], .quick-set button, .control-group button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        .quick-set {
             display: flex;
-            align-items: center;
+            justify-content: space-between;
         }
-        .toggle-button {
-            position: absolute;
-            right: 10px;
-            background: none;
-            border: none;
-            color: #4CAF50;
-            cursor: pointer;
+        .quick-set button {
+            width: 32%; /* Adjusted width for 3 buttons to fit in one row */
+            background-color: #808080; /* Gray color */
+            color: white;
         }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
+        .control-group {
+            display: flex;
+            justify-content: space-between;
         }
-        select, button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border-radius: 5px;
-            border: 1px solid #ccc;
-            box-sizing: border-box;
+        .control-group button {
+            width: 48%; /* Adjusted width for 2 buttons to fit side by side */
         }
         button:hover {
             opacity: 0.8;
@@ -67,10 +67,11 @@
     <h2>연장 근로 계산기</h2>
     <div class="container">
         <label for="baseSalary">기본 월급:</label>
-        <div class="salary-input-container">
-            <input type="password" id="baseSalary" placeholder="원">
-            <button class="toggle-button" onclick="toggleVisibility()">보기</button>
-        </div>
+        <input type="text" id="baseSalary" placeholder="원" onfocus="toggleMask(true)" onblur="toggleMask(false)">
+        <label for="overtimeHours">연장 근로 시간:</label>
+        <select id="overtimeHours">
+            <option value="">시간 선택</option>
+            <!-- 1시간부터 15시간까지 옵션 추가 -->
             <script>
                 for(let i = 1; i <= 15; i++) {
                     document.write('<option value="' + i + '">' + i + '시간</option>');
@@ -131,4 +132,3 @@
     </script>
 </body>
 </html>
-
